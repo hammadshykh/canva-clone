@@ -1,5 +1,5 @@
 "use client";
-import { WorkSpaceMenu } from "@/services/options";
+import { WorkSpaceMenu } from "@/services/Options";
 import { CirclePlus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";

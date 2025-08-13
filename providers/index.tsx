@@ -5,13 +5,11 @@ import { useUser } from "@stackframe/stack";
 import { useMutation } from "convex/react";
 import React, { ReactNode, useEffect, useState } from "react";
 
-// First, define the type for your user details
 interface UserDetails {
- id?: string; // assuming the mutation returns an id
+ id?: string;
  name: string | null | undefined;
  email: string | null | undefined;
  picture: string | null | undefined;
- // add any other fields you need
 }
 
 const Provider = ({ children }: { children: ReactNode }) => {
@@ -23,7 +21,7 @@ const Provider = ({ children }: { children: ReactNode }) => {
   if (user) {
    createUser();
   }
- }, [user]); // Add user as dependency to run effect when user changes
+ }, [user]);
 
  const createUser = async () => {
   const data: UserDetails = {
@@ -34,12 +32,9 @@ const Provider = ({ children }: { children: ReactNode }) => {
 
   try {
    const result = await createNewUserMutation(data as any);
-
-   // Update the userDetails state with the response
    setUserDetails({
     ...data,
    });
-
    console.log(result, "RESULT CREATE USER");
   } catch (error) {
    console.error("Error creating user:", error);
