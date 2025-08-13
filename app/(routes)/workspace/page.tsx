@@ -9,7 +9,7 @@ import Link from "next/link";
 const WorkSpacePage = () => {
  const user = useUser();
 
- if (!user) {
+ if (!user?.primaryEmail) {
   return (
    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 gap-4 p-6">
     <h1 className="text-2xl font-bold">
