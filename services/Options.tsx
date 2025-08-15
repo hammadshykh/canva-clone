@@ -13,6 +13,7 @@ import {
 interface MenuItem {
  name: string;
  icon: React.ComponentType<{ className?: string }>; // Proper type for Lucide icons
+ desc?: string;
 }
 
 export const WorkSpaceMenu = [
@@ -42,12 +43,18 @@ export const sideBarMenu: MenuItem[] = [
  {
   name: "Templates",
   icon: LayoutTemplate,
+  desc: "Select Prebuild Template",
  },
  {
   name: "Elements",
   icon: Image,
+  desc: "Select Shapes and Stickers",
  },
- { name: "Text", icon: Type },
- { name: "AI", icon: Sparkle },
- { name: "Settings", icon: Settings },
+ { name: "Text", icon: Type, desc: "Add Text and Heading" },
+ { name: "AI", icon: Sparkle, desc: "More AI Features to enhance your design" },
+ {
+  name: "Settings",
+  icon: Settings,
+  desc: "Update Canvas Size and background",
+ },
 ];
