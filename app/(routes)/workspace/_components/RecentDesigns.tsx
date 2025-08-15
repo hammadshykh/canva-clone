@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
+import { CreateCanvasDialog } from "./CreateCanvasDialog";
 
 const RecentDesigns = () => {
  const [designList, setDesignList] = useState([]);
@@ -15,7 +16,9 @@ const RecentDesigns = () => {
       {" "}
       You don't have any design created, Create New one!
      </h2>
-     <Button>+ Create New</Button>
+     <CreateCanvasDialog>
+      <Button>+ Create New</Button>
+     </CreateCanvasDialog>
     </div>
    ) : null}
   </div>

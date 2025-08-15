@@ -1,11 +1,9 @@
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+// convex/schema/index.ts
+import { defineSchema } from "convex/server";
+import { users } from "./schemas/users";
+import { designs } from "./schemas/designs";
 
 export default defineSchema({
- users: defineTable({
-  name: v.string(),
-  email: v.string(),
-  picture: v.string(),
-  subscriptionId: v.optional(v.string()),
- }),
+ users,
+ designs,
 });

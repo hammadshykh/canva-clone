@@ -15,6 +15,7 @@ const Sidebar = () => {
    </div>
    {WorkSpaceMenu.map((menu) => (
     <div
+     key={menu.name}
      className={`flex p-2 items-center flex-col mb-4 group hover:bg-purple-100 rounded-xl cursor-pointer ${pathName == menu.path && "bg-purple-100"}`}
     >
      <menu.icon

@@ -13,6 +13,9 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as designs from "../designs.js";
+import type * as schemas_designs from "../schemas/designs.js";
+import type * as schemas_users from "../schemas/users.js";
 import type * as users from "../users.js";
 
 /**
@@ -24,6 +27,9 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  designs: typeof designs;
+  "schemas/designs": typeof schemas_designs;
+  "schemas/users": typeof schemas_users;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

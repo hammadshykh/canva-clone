@@ -6,7 +6,7 @@ import { useMutation } from "convex/react";
 import React, { ReactNode, useEffect, useState } from "react";
 
 interface UserDetails {
- id?: string;
+ _id?: any;
  name: string | null | undefined;
  email: string | null | undefined;
  picture: string | null | undefined;
@@ -31,9 +31,9 @@ const Provider = ({ children }: { children: ReactNode }) => {
   };
 
   try {
-   const result = await createNewUserMutation(data as any);
+   const result = await createNewUserMutation({ ...data } as any);
    setUserDetails({
-    ...data,
+    ...(result as any),
    });
    console.log(result, "RESULT CREATE USER");
   } catch (error) {

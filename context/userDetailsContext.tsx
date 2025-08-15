@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 interface UserDetails {
- id?: string;
+ _id?: any;
  name: string | null | undefined;
  email: string | null | undefined;
  picture: string | null | undefined;
