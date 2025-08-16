@@ -6,6 +6,7 @@ import {
  LayoutDashboardIcon,
  LayoutTemplate,
  Settings,
+ ShapesIcon,
  Sparkle,
  Type,
  WalletCardsIcon,
@@ -51,7 +52,7 @@ export const sideBarMenu: MenuItem[] = [
  },
  {
   name: "Elements",
-  icon: Image,
+  icon: ShapesIcon,
   desc: "Select Shapes and Stickers",
  },
  {
