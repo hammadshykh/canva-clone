@@ -1,4 +1,5 @@
 import {
+ Component,
  Folders,
  Home,
  Image,
@@ -9,11 +10,14 @@ import {
  Type,
  WalletCardsIcon,
 } from "lucide-react";
+import BackgroundSetting from "./Components/BackgroundSetting";
+import AddImageSetting from "./Components/AddImageSetting";
 
 interface MenuItem {
  name: string;
  icon: React.ComponentType<{ className?: string }>; // Proper type for Lucide icons
  desc?: string;
+ component?: any;
 }
 
 export const WorkSpaceMenu = [
@@ -50,11 +54,97 @@ export const sideBarMenu: MenuItem[] = [
   icon: Image,
   desc: "Select Shapes and Stickers",
  },
+ {
+  name: "Images",
+  icon: Image,
+  desc: "Add Image or upload your image",
+  component: <AddImageSetting />,
+ },
  { name: "Text", icon: Type, desc: "Add Text and Heading" },
  { name: "AI", icon: Sparkle, desc: "More AI Features to enhance your design" },
+ {
+  name: "Background",
+  icon: Component,
+  desc: "Change Canvas Background",
+  component: <BackgroundSetting />,
+ },
  {
   name: "Settings",
   icon: Settings,
   desc: "Update Canvas Size and background",
+ },
+];
+
+export const CanvasOptionSelect = [
+ {
+  name: "Instagram Post",
+  icon: "/instagram.png",
+  bgColor: "bg-gradient-to-br from-purple-500 to-pink-500",
+  width: 1200,
+  height: 800,
+ },
+ {
+  name: "Instagram Story",
+  icon: "/instagram.png",
+  bgColor: "bg-gradient-to-br from-purple-500 to-pink-500",
+  width: 300,
+  height: 600,
+ },
+ { name: "YouTube Thumbnail", icon: "/youtube.png", bgColor: "bg-red-500" },
+ {
+  name: "YouTube Banner",
+  icon: "/youtube.png",
+  bgColor: "bg-red-600",
+  width: 1400,
+  height: 1000,
+ },
+ {
+  name: "YouTube Post",
+  icon: "/youtube.png",
+  bgColor: "bg-red-500",
+  width: 1200,
+  height: 800,
+ },
+ {
+  name: "PowerPoint Slide",
+  icon: "/ppt.png",
+  bgColor: "bg-orange-500",
+  width: 500,
+  height: 400,
+ },
+ {
+  name: "Flyer (A4)",
+  icon: "/banner.png",
+  bgColor: "bg-green-500",
+  width: 500,
+  height: 400,
+ },
+ {
+  name: "Facebook Post",
+  icon: "/facebook.png",
+  bgColor: "bg-blue-600",
+  width: 1200,
+  height: 800,
+ },
+ {
+  name: "Twitter Post",
+  icon: "/twitter.png",
+  bgColor: "bg-sky-500",
+  width: 1200,
+  height: 800,
+ },
+ {
+  name: "LinkedIn Post",
+  icon: "/linkedin.png",
+  bgColor: "bg-blue-700",
+  width: 1200,
+  height: 800,
+ },
+ {
+  name: "Pinterest Pin",
+  icon: "/pinterest.png",
+  bgColor: "bg-red-600",
+  width: 500,
+  height: 400,
  },
 ];

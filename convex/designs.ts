@@ -5,12 +5,11 @@ import { mutation, query } from "./_generated/server";
 export const CreateNewDesign = mutation({
  args: {
   name: v.string(),
-  width: v.number(),
-  height: v.number(),
-  uid: v.id("users"), // foreign key to users table
+  width: v.float64(),
+  height: v.float64(),
+  uid: v.id("users"),
  },
  handler: async (ctx, args) => {
-  // Optional: check if a design with same name & user already exists
   const existing = await ctx.db
    .query("designs")
    .filter((q) =>
@@ -19,18 +18,9 @@ export const CreateNewDesign = mutation({
    .collect();
 
   if (existing.length === 0) {
-   const designId = await ctx.db.insert("designs", {
-    name: args.name,
-    width: args.width,
-    height: args.height,
-    uid: args.uid,
-   });
-
-   return designId; // returns the inserted design's ID
+   return await ctx.db.insert("designs", args);
   }
-
-  // If already exists, return the first one
-  return existing[0];
+  return existing[0]._id;
  },
 });
 

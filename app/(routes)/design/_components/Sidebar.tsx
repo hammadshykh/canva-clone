@@ -4,9 +4,7 @@ import React, { useState } from "react";
 import SidebarSettings from "./sidebarSettings";
 
 const Sidebar = () => {
- const [selectedOption, setSelectedOption] = useState<string>(
-  sideBarMenu[0].name
- );
+ const [selectedOption, setSelectedOption] = useState<any>(sideBarMenu[1]);
 
  return (
   <div className="flex">
@@ -15,9 +13,9 @@ const Sidebar = () => {
      <div
       key={index}
       className={`p-2 mb-2 flex flex-col items-center hover:bg-secondary cursor-pointer rounded-md ${
-       menu.name === selectedOption ? "bg-secondary" : ""
+       menu.name === selectedOption.name ? "bg-secondary" : ""
       }`}
-      onClick={() => setSelectedOption(menu.name)}
+      onClick={() => setSelectedOption(menu)}
      >
       <menu.icon className="w-5 h-5" />
       <h2 className="mt-1 text-sm">{menu.name}</h2>
