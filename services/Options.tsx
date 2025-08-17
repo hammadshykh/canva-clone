@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import BackgroundSetting from "./Components/BackgroundSetting";
 import AddImageSetting from "./Components/AddImageSetting";
+import Elements from "./Components/Elements";
 
 interface MenuItem {
  name: string;
@@ -54,6 +55,7 @@ export const sideBarMenu: MenuItem[] = [
   name: "Elements",
   icon: ShapesIcon,
   desc: "Select Shapes and Stickers",
+  component: <Elements />,
  },
  {
   name: "Images",
@@ -147,5 +149,24 @@ export const CanvasOptionSelect = [
   bgColor: "bg-red-600",
   width: 500,
   height: 400,
+ },
+];
+
+export const shapeList = [
+ {
+  name: "Circle",
+  icon: "/moon.png",
+ },
+ {
+  name: "Square",
+  icon: "/square.png",
+ },
+ {
+  name: "Trangle",
+  icon: "/trangle.png",
+ },
+ {
+  name: "Line",
+  icon: "/line.png",
  },
 ];
