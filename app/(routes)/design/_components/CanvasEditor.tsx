@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "fabric";
 import { useCanvas } from "@/context/CanvasEditorContext";
+import TopNavbar from "@/services/Components/TopNavbar";
 const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
  const canvasRef = useRef(null);
  //  const [canvas, setCanvas] = useState<any>(null);
@@ -61,8 +62,11 @@ const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
  }, [canvasEditor]);
 
  return (
-  <div className="text-black w-full bg-secondary min-h-screen flex flex-col items-center justify-center">
-   <canvas id="canvas" ref={canvasRef} />
+  <div className=" w-full bg-secondary min-h-screen ">
+   <TopNavbar />
+   <div className="text-black flex flex-col mt-10 items-center justify-center">
+    <canvas id="canvas" ref={canvasRef} />
+   </div>
   </div>
  );
 };

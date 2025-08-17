@@ -1,19 +1,26 @@
 import {
+ Blend,
  Component,
  Folders,
  Home,
  Image,
  LayoutDashboardIcon,
  LayoutTemplate,
+ Minus,
+ Palette,
  Settings,
  ShapesIcon,
  Sparkle,
+ Square,
+ SquareRoundCorner,
+ Trash2,
  Type,
  WalletCardsIcon,
 } from "lucide-react";
 import BackgroundSetting from "./Components/BackgroundSetting";
 import AddImageSetting from "./Components/AddImageSetting";
 import Elements from "./Components/Elements";
+import FillColor from "./Sharable/FillColor";
 
 interface MenuItem {
  name: string;
@@ -168,5 +175,33 @@ export const shapeList = [
  {
   name: "Line",
   icon: "/line.png",
+ },
+];
+
+export const shapesSettingsList = [
+ {
+  name: "Fill",
+  icon: Palette,
+  component: <FillColor />,
+ },
+ {
+  name: "Stroke Color",
+  icon: Square,
+ },
+ {
+  name: "Stroke Width",
+  icon: Minus,
+ },
+ {
+  name: "Opacity",
+  icon: Blend,
+ },
+ {
+  name: "Rounded Corner",
+  icon: SquareRoundCorner,
+ },
+ {
+  name: "Delete",
+  icon: Trash2,
  },
 ];
