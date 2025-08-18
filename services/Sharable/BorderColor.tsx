@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ColorPickerEditor from "./ColorPickerEditor";
 import { useCanvas } from "@/context/CanvasEditorContext";
 
-const FillColor = () => {
+const BorderColor = () => {
  const [selectedColor, setSelectedColor] = useState("#000000"); // Default black color
  const { canvasEditor } = useCanvas();
 
@@ -12,7 +12,7 @@ const FillColor = () => {
 
   const activeObject = canvasEditor?.getActiveObject();
   activeObject?.set({
-   fill: selectedColor,
+   stroke: selectedColor,
   });
 
   canvasEditor?.add(activeObject as any);
@@ -29,4 +29,4 @@ const FillColor = () => {
  );
 };
 
-export default FillColor;
+export default BorderColor;

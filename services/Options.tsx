@@ -13,7 +13,6 @@ import {
  Sparkle,
  Square,
  SquareRoundCorner,
- Trash2,
  Type,
  WalletCardsIcon,
 } from "lucide-react";
@@ -21,6 +20,12 @@ import BackgroundSetting from "./Components/BackgroundSetting";
 import AddImageSetting from "./Components/AddImageSetting";
 import Elements from "./Components/Elements";
 import FillColor from "./Sharable/FillColor";
+import BorderColor from "./Sharable/BorderColor";
+import BorderWidth from "./Sharable/BorderWidth";
+import OpacitySlider from "./Sharable/OpacitySlider";
+import BorderRadius from "./Sharable/BorderRadius";
+import AITransformSetting from "./Components/AITransformSetting";
+import TextSetting from "./Components/TextSetting";
 
 interface MenuItem {
  name: string;
@@ -70,8 +75,18 @@ export const sideBarMenu: MenuItem[] = [
   desc: "Add Image or upload your image",
   component: <AddImageSetting />,
  },
- { name: "Text", icon: Type, desc: "Add Text and Heading" },
- { name: "AI", icon: Sparkle, desc: "More AI Features to enhance your design" },
+ {
+  name: "Text",
+  icon: Type,
+  desc: "Add Text and Heading",
+  component: <TextSetting />,
+ },
+ {
+  name: "AI",
+  icon: Sparkle,
+  desc: "More AI Features to enhance your design",
+  component: <AITransformSetting />,
+ },
  {
   name: "Background",
   icon: Component,
@@ -187,21 +202,74 @@ export const shapesSettingsList = [
  {
   name: "Stroke Color",
   icon: Square,
+  component: <BorderColor />,
  },
  {
   name: "Stroke Width",
   icon: Minus,
+  component: <BorderWidth />,
  },
  {
   name: "Opacity",
   icon: Blend,
+  component: <OpacitySlider />,
  },
  {
   name: "Rounded Corner",
   icon: SquareRoundCorner,
+  component: <BorderRadius />,
+ },
+ //  {
+ //   name: "Delete",
+ //   icon: Trash,
+ //  },
+];
+
+export const AITransformationSettings = [
+ {
+  name: "Background Remove",
+  command: "e-bgremove",
+  image: "/remove-bg.jpg",
  },
  {
-  name: "Delete",
-  icon: Trash2,
+  name: "Change Background",
+  command: "e-changebg-prompt-",
+  image: "/change-bg.jpg",
+  input: true,
+ },
+ {
+  name: "Generative fill",
+  command: "bg-genfill,w-1000,h-960,cm-pad_resize",
+  image: "/generative-fill.png",
+ },
+ {
+  name: "AI drop shadow",
+  command: "e-dropshadow",
+  image: "/shadow.jpeg",
+ },
+ {
+  name: "Upscale",
+  command: "e-upscale",
+  image: "/upscale.png",
+ },
+ {
+  name: "Smart crop",
+  command: "fo-auto",
+  image: "/smartcrop.png",
+ },
+ {
+  name: "Contrast",
+  command: "e-grayscale",
+  image: "/grayscale.png",
+ },
+ {
+  name: "Blur",
+  command: "e-blur",
+  image: "/e-blur.png",
+ },
+ {
+  name: "Flip",
+  command: "e-flip",
+  image: "/e-flip.png",
  },
 ];
