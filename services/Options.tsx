@@ -104,18 +104,25 @@ export const sideBarMenu: MenuItem[] = [
 
 export const CanvasOptionSelect = [
  {
+  name: "Business Card",
+  icon: "/business-card.png", // You'll need to add this icon
+  bgColor: "bg-gradient-to-br from-gray-600 to-gray-800",
+  width: 1050, // 3.5 inches * 300 DPI
+  height: 600, // 2 inches * 300 DPI
+ },
+ {
   name: "Instagram Post",
   icon: "/instagram.png",
   bgColor: "bg-gradient-to-br from-purple-500 to-pink-500",
-  width: 1200,
-  height: 800,
+  width: 1400,
+  height: 1400, // Updated to square aspect ratio (1:1)
  },
  {
   name: "Instagram Story",
   icon: "/instagram.png",
   bgColor: "bg-gradient-to-br from-purple-500 to-pink-500",
-  width: 300,
-  height: 600,
+  width: 1080, // Standard Instagram Story width
+  height: 1920, // Standard Instagram Story height
  },
  { name: "YouTube Thumbnail", icon: "/youtube.png", bgColor: "bg-red-500" },
  {
