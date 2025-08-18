@@ -12,6 +12,8 @@ import { toast } from "sonner";
 const ShapesSettings = () => {
  const { canvasEditor } = useCanvas();
 
+ const activeObject = canvasEditor?.getActiveObject();
+
  const handleDeleteObject = () => {
   if (!canvasEditor) {
    toast.error("Canvas not initialized");

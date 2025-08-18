@@ -1,5 +1,6 @@
 import {
  Blend,
+ BookType,
  Component,
  Folders,
  Home,
@@ -26,6 +27,7 @@ import OpacitySlider from "./Sharable/OpacitySlider";
 import BorderRadius from "./Sharable/BorderRadius";
 import AITransformSetting from "./Components/AITransformSetting";
 import TextSetting from "./Components/TextSetting";
+import FontFamily from "./Sharable/FontFamily";
 
 interface MenuItem {
  name: string;
@@ -219,6 +221,11 @@ export const shapesSettingsList = [
   icon: SquareRoundCorner,
   component: <BorderRadius />,
  },
+ {
+  name: "Font",
+  icon: BookType,
+  component: <FontFamily />,
+ },
  //  {
  //   name: "Delete",
  //   icon: Trash,
@@ -272,4 +279,27 @@ export const AITransformationSettings = [
   command: "e-flip",
   image: "/e-flip.png",
  },
+];
+
+export const FontFamilyList = [
+ "Arial",
+ "Arial Black",
+ "Verdana",
+ "Tahoma",
+ "Helvetica",
+ "Times New Roman",
+ "Georgia",
+ "Courier New",
+ "Impact",
+ "Trebuchet MS",
+ "Palatino",
+ "Garamond",
+ "Bookman",
+ "Comic Sans MS",
+ "Roboto",
+ "Open Sans",
+ "Montserrat",
+ "Lato",
+ "Poppins",
+ "Playfair Display",
 ];
