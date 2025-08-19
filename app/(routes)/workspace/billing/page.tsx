@@ -67,7 +67,7 @@ const BillingPage = () => {
  ];
 
  return (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4">
+  <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 p-10">
    <div className="w-full h-[200px] rounded-2xl mb-5 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 relative overflow-hidden">
     <Image
      src={"/banner-home.png"}
@@ -136,7 +136,7 @@ const BillingPage = () => {
          </ul>
 
          <Button
-          className={`w-full ${
+          className={`w-full fixed botom-10 ${
            plan.popular
             ? "bg-blue-600 hover:bg-blue-700"
             : "bg-gray-900 hover:bg-gray-800"

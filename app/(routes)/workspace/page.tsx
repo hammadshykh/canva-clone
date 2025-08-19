@@ -5,6 +5,8 @@ import RecentDesigns from "./_components/RecentDesigns";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 const WorkSpacePage = () => {
  const user = useUser();
 
