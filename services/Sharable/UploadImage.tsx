@@ -72,7 +72,9 @@ const UploadImage: React.FC = () => {
 
    console.log(imageRef, "image");
 
-   const canvasImageRef = await FabricImage.fromURL(imageRef?.url);
+   const canvasImageRef = await FabricImage.fromURL(imageRef?.url, {
+    crossOrigin: "anonymous",
+   });
 
    // Calculate aspect ratio and set dimensions
    const aspectRatio = canvasImageRef.width / canvasImageRef.height;

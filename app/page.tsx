@@ -1,10 +1,12 @@
-import { UserButton } from "@stackframe/stack";
+"use client";
+import { useUser } from "@stackframe/stack";
+import { redirect } from "next/navigation";
 
 export default function Home() {
- return (
-  <div className="max-w-7xl mx-auto px-4 py-20">
-   <h1 className="text-4xl font-bold">CANVA PROJECT</h1>
-   <UserButton />
-  </div>
- );
+ const user = useUser();
+ if (user?.primaryEmail) {
+  redirect("/workspace");
+ }
+
+ redirect("/handler/sign-in");
 }

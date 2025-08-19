@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import ShapesSettings from "../Sharable/ShapesSettings";
 import { useCanvas } from "@/context/CanvasEditorContext";
+import TextSettingsNavbar from "./TextSettingsNavbar";
 
 const TopNavbar = () => {
  const { canvasEditor } = useCanvas();
  const [hasSelectedObject, setHasSelectedObject] = React.useState(false);
+ const [enableTextSettings, setEnableTextSettings] = useState(false);
 
  React.useEffect(() => {
   if (!canvasEditor) return;
@@ -26,12 +28,22 @@ const TopNavbar = () => {
  }, [canvasEditor]);
 
  const checkSelection = () => {
-  const activeObject = canvasEditor?.getActiveObject();
-  setHasSelectedObject(!!activeObject);
+  const activeObject: any = canvasEditor?.getActiveObject();
+  if (!activeObject?.text) {
+   setHasSelectedObject(true);
+   setEnableTextSettings(false);
+  }
+  if (activeObject?.text) {
+   setEnableTextSettings(true);
+   setHasSelectedObject(false);
+  }
  };
 
  return (
-  <div className="p-3 bg-white">{hasSelectedObject && <ShapesSettings />}</div>
+  <div className="p-3 bg-white">
+   {hasSelectedObject && <ShapesSettings />}
+   {enableTextSettings && <TextSettingsNavbar />}
+  </div>
  );
 };
 

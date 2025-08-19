@@ -1,21 +1,24 @@
 "use client";
 import { WorkSpaceMenu } from "@/services/Options";
 import { CirclePlus } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { CreateCanvasDialog } from "./CreateCanvasDialog";
 
 const Sidebar = () => {
  const pathName = usePathname();
 
  return (
-  <div className="shadow-sm h-screen bg-purple-100">
+  <div className="shadow-sm min-h-screen bg-purple-100">
    <div className="p-2 flex items-center flex-col mb-5 hover:cursor-pointer">
     <CirclePlus className="bg-purple-600 text-white rounded-full w-8 h-8" />
     <h2 className="text-sm text-purple-600">Create</h2>
    </div>
    {WorkSpaceMenu.map((menu) => (
-    <div
+    <Link
      key={menu.name}
+     href={menu.path}
      className={`flex p-2 items-center flex-col mb-4 group hover:bg-purple-100 rounded-xl cursor-pointer ${pathName == menu.path && "bg-purple-100"}`}
     >
      <menu.icon
@@ -26,7 +29,7 @@ const Sidebar = () => {
      >
       {menu.name}
      </h2>
-    </div>
+    </Link>
    ))}
   </div>
  );

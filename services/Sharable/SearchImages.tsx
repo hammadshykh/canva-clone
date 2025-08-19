@@ -68,7 +68,9 @@ const SearchImages = () => {
    //  toast.loading("Adding image to canvas...");
 
    // Use regular URL for better quality
-   const img = await FabricImage.fromURL(image.urls.regular);
+   const img = await FabricImage.fromURL(image.urls.regular, {
+    crossOrigin: "anonymous",
+   });
 
    // Calculate dimensions to fit canvas (max 500px while maintaining aspect ratio)
    const maxSize = 500;

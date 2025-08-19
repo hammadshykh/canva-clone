@@ -33,3 +33,54 @@ export const GetDesign = query({
   return result;
  },
 });
+
+export const SaveDesign = mutation({
+ args: {
+  id: v.id("designs"),
+  jsonDesign: v.any(),
+  imagePreview: v.string(),
+ },
+ handler: async (ctx, args) => {
+  const result = await ctx.db.patch(args.id, {
+   jsonTemplate: args?.jsonDesign,
+   imagePreview: args?.imagePreview,
+  });
+  return result;
+ },
+});
+
+export const GetUserDesigns = query({
+ args: {
+  id: v.id("users"),
+ },
+ handler: async (ctx, args) => {
+  const result = ctx.db
+   .query("designs")
+   .filter((q) => q.eq(q.field("uid"), args.id))
+   .collect();
+  return result;
+ },
+});
+
+export const CreateDesignFormTemplate = mutation({
+ args: {
+  name: v.string(),
+  imagePreview: v.string(),
+  jsonTemplate: v.any(),
+  uuid: v.id("users"),
+  height: v.number(),
+  width: v.number(),
+ },
+ handler: async (ctx, args) => {
+  const result = await ctx.db.insert("designs", {
+   name: args.name,
+   height: args.height,
+   width: args.width,
+   imagePreview: args.imagePreview,
+   jsonTemplate: args.jsonTemplate,
+
+   uid: args.uuid,
+  });
+  return result;
+ },
+});

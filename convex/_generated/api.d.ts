@@ -15,7 +15,9 @@ import type {
 } from "convex/server";
 import type * as designs from "../designs.js";
 import type * as schemas_designs from "../schemas/designs.js";
+import type * as schemas_templates from "../schemas/templates.js";
 import type * as schemas_users from "../schemas/users.js";
+import type * as templates from "../templates.js";
 import type * as users from "../users.js";
 
 /**
@@ -29,7 +31,9 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   designs: typeof designs;
   "schemas/designs": typeof schemas_designs;
+  "schemas/templates": typeof schemas_templates;
   "schemas/users": typeof schemas_users;
+  templates: typeof templates;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

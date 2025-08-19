@@ -28,6 +28,8 @@ import BorderRadius from "./Sharable/BorderRadius";
 import AITransformSetting from "./Components/AITransformSetting";
 import TextSetting from "./Components/TextSetting";
 import FontFamily from "./Sharable/FontFamily";
+import FontStyles from "./Sharable/FontStyles";
+import TemplateList from "./Components/TemplateList";
 
 interface MenuItem {
  name: string;
@@ -64,6 +66,7 @@ export const sideBarMenu: MenuItem[] = [
   name: "Templates",
   icon: LayoutTemplate,
   desc: "Select Prebuild Template",
+  component: <TemplateList />,
  },
  {
   name: "Elements",
@@ -147,13 +150,6 @@ export const CanvasOptionSelect = [
   height: 400,
  },
  {
-  name: "Flyer (A4)",
-  icon: "/banner.png",
-  bgColor: "bg-green-500",
-  width: 500,
-  height: 400,
- },
- {
   name: "Facebook Post",
   icon: "/facebook.png",
   bgColor: "bg-blue-600",
@@ -228,15 +224,44 @@ export const shapesSettingsList = [
   icon: SquareRoundCorner,
   component: <BorderRadius />,
  },
- {
-  name: "Font",
-  icon: BookType,
-  component: <FontFamily />,
- },
+
  //  {
  //   name: "Delete",
  //   icon: Trash,
  //  },
+];
+
+export const TextSettingsList = [
+ {
+  name: "Fill",
+  icon: Palette,
+  component: <FillColor />,
+ },
+ {
+  name: "Stroke Color",
+  icon: Square,
+  component: <BorderColor />,
+ },
+ {
+  name: "Stroke Width",
+  icon: Minus,
+  component: <BorderWidth />,
+ },
+ {
+  name: "Opacity",
+  icon: Blend,
+  component: <OpacitySlider />,
+ },
+ {
+  name: "Rounded Corner",
+  icon: SquareRoundCorner,
+  component: <BorderRadius />,
+ },
+ {
+  name: "Font Family",
+  icon: BookType,
+  component: <FontFamily />,
+ },
 ];
 
 export const AITransformationSettings = [

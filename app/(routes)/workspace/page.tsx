@@ -27,7 +27,7 @@ const WorkSpacePage = () => {
  }
 
  return (
-  <div className="p-6 bg-gray-50 min-h-screen">
+  <div className="p-10 w-full bg-gray-50 min-h-screen">
    <IntroOptions />
    <RecentDesigns />
   </div>

@@ -59,7 +59,9 @@ const CustomImageUpload = ({ selectedAi }: { selectedAi: any }) => {
   const toastId = toast.loading("Adding image to canvas...");
 
   try {
-   const img = await FabricImage.fromURL(imageUrl);
+   const img = await FabricImage.fromURL(imageUrl, {
+    crossOrigin: "anonymous",
+   });
 
    // Calculate dimensions to fit canvas
    const maxSize = Math.min(canvasEditor.width!, canvasEditor.height!) * 0.8;

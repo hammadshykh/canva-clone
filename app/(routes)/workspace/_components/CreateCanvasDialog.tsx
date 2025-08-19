@@ -84,7 +84,7 @@ export function CreateCanvasDialog({ children }: { children: ReactNode }) {
  return (
   <Dialog>
    <DialogTrigger asChild>
-    <Button variant="outline">{children}</Button>
+    <Button>{children}</Button>
    </DialogTrigger>
    <DialogContent className="sm:max-w-[425px]">
     <DialogHeader>

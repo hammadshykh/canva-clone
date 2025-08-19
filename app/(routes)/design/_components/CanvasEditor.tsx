@@ -29,6 +29,12 @@ const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
     zoom: 1 / scaleFactor,
    });
 
+   if (designInfo?.jsonTemplate) {
+    initCanvas.loadFromJSON(designInfo.jsonTemplate, () => {
+     initCanvas?.requestRenderAll();
+    });
+   }
+
    initCanvas.renderAll();
    //  setCanvas(initCanvas);
    setCanvasEditor(initCanvas as any);
