@@ -8,7 +8,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ImageKit from "imagekit";
 
@@ -18,6 +18,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
  const [isSaving, setIsSaving] = useState(false);
  const [isExporting, setIsExporting] = useState(false);
  const [designName, setDesignName] = useState(designInfo?.name || "");
+ const router = useRouter();
 
  const imagekit = new ImageKit({
   publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
@@ -136,6 +137,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
   <div className="flex justify-between items-center p-3 px-6 bg-gradient-to-r from-sky-500 via-blue-400 to-purple-500">
    <Image
     src={"/logo-white.png"}
+    onClick={() => router.push("/workspace")}
     alt="logo"
     width={100}
     height={100}
