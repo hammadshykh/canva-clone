@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Canvas } from "fabric";
 import { useCanvas } from "@/context/CanvasEditorContext";
 import TopNavbar from "@/services/Components/TopNavbar";
@@ -6,8 +6,6 @@ import TopNavbar from "@/services/Components/TopNavbar";
 const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
  const canvasRef = useRef(null);
  const { canvasEditor, setCanvasEditor } = useCanvas();
- const [history, setHistory] = useState<string[]>([]);
- const [historyIndex, setHistoryIndex] = useState(-1);
 
  // Initialize canvas
  useEffect(() => {
@@ -30,62 +28,17 @@ const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
    if (designInfo?.jsonTemplate) {
     initCanvas.loadFromJSON(designInfo.jsonTemplate, () => {
      initCanvas.requestRenderAll();
-     // Save initial state to history
-     saveToHistory(initCanvas);
     });
-   } else {
-    saveToHistory(initCanvas);
    }
 
    initCanvas.renderAll();
    setCanvasEditor(initCanvas);
 
-   // Setup event listeners for history tracking
-   initCanvas.on("object:modified", () => saveToHistory(initCanvas));
-   initCanvas.on("object:added", () => saveToHistory(initCanvas));
-   initCanvas.on("object:removed", () => saveToHistory(initCanvas));
-
    return () => {
-    initCanvas.off("object:modified");
-    initCanvas.off("object:added");
-    initCanvas.off("object:removed");
     initCanvas.dispose();
    };
   }
  }, [designInfo]);
-
- // Save canvas state to history
- const saveToHistory = (canvas: Canvas) => {
-  const json = JSON.stringify(canvas.toJSON());
-  setHistory((prev) => {
-   const newHistory = prev.slice(0, historyIndex + 1);
-   newHistory.push(json);
-   return newHistory;
-  });
-  setHistoryIndex((prev) => prev + 1);
- };
-
- // Undo functionality
- const undo = () => {
-  if (historyIndex > 0 && canvasEditor) {
-   const newIndex = historyIndex - 1;
-   setHistoryIndex(newIndex);
-   canvasEditor.loadFromJSON(JSON.parse(history[newIndex]), () => {
-    canvasEditor.renderAll();
-   });
-  }
- };
-
- // Redo functionality
- const redo = () => {
-  if (historyIndex < history.length - 1 && canvasEditor) {
-   const newIndex = historyIndex + 1;
-   setHistoryIndex(newIndex);
-   canvasEditor.loadFromJSON(JSON.parse(history[newIndex]), () => {
-    canvasEditor.renderAll();
-   });
-  }
- };
 
  // Keyboard event handler
  useEffect(() => {
@@ -99,22 +52,7 @@ const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
      canvasEditor.remove(activeObject);
      canvasEditor.renderAll();
     }
-   }
-
-   // Undo (Ctrl+Z)
-   if ((event.ctrlKey || event.metaKey) && event.key === "z") {
-    event.preventDefault();
-    if (event.shiftKey) {
-     redo(); // Ctrl+Shift+Z for redo
-    } else {
-     undo(); // Ctrl+Z for undo
-    }
-   }
-
-   // Redo (Ctrl+Y)
-   if ((event.ctrlKey || event.metaKey) && event.key === "y") {
-    event.preventDefault();
-    redo();
+    return;
    }
 
    // Arrow key movement
@@ -149,7 +87,7 @@ const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
 
   document.addEventListener("keydown", handleKeyDown);
   return () => document.removeEventListener("keydown", handleKeyDown);
- }, [canvasEditor, undo, redo]);
+ }, [canvasEditor]);
 
  return (
   <div className="w-full bg-secondary min-h-screen">
