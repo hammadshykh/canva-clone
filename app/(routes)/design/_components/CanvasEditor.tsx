@@ -46,7 +46,7 @@ const CanvasEditor = ({ designInfo }: { designInfo: any }) => {
    if (!canvasEditor) return;
 
    // Delete key
-   if (event.key === "Delete" || event.key === "Backspace") {
+   if (event.key === "Delete") {
     const activeObject = canvasEditor.getActiveObject();
     if (activeObject) {
      canvasEditor.remove(activeObject);
