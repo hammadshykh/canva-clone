@@ -3,34 +3,46 @@ import { UserDetailContext } from "@/context/userDetailsContext";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CanvasOptionSelect } from "@/services/Options";
+import { toast } from "sonner";
 
 const IntroOptions = () => {
  const createDesignRecord = useMutation(api.designs.CreateNewDesign);
  const { userDetails } = useContext(UserDetailContext);
  const router = useRouter();
+ const [loadingId, setLoadingId] = useState<string | null>(null);
 
  const OnCanvasOptionSelect = async (option: any) => {
-  console.log(option, "Before create design");
   if (!option?.width || !option?.height) {
-   console.error("Missing required dimensions for design");
+   toast.error("Missing dimensions for this template");
    return;
   }
+
+  if (!userDetails?._id) {
+   toast.error("Please sign in to create designs");
+   return;
+  }
+
+  setLoadingId(option.name);
+  const toastId = toast.loading(`Creating ${option.name}...`);
 
   try {
    const result = await createDesignRecord({
     name: option.name,
     width: option.width,
     height: option.height,
-    uid: userDetails?._id || "",
+    uid: userDetails._id,
    });
 
-   console.log(result, "INTRO OPTION");
+   toast.success("Design created successfully!", { id: toastId });
    router.push("/design/" + result);
   } catch (error) {
    console.error("Error creating design:", error);
+   toast.error("Failed to create design", { id: toastId });
+  } finally {
+   setLoadingId(null);
   }
  };
 
@@ -52,16 +64,21 @@ const IntroOptions = () => {
       <div
        key={index}
        onClick={() => OnCanvasOptionSelect(option)}
-       className="flex flex-col items-center rounded-lg cursor-pointer group"
+       className="flex flex-col items-center rounded-lg cursor-pointer group hover:scale-105 transition-transform"
+       //  disabled={loadingId === option.name}
       >
        <Image
         src={option.icon}
         alt={option.name}
         width={60}
         height={60}
-        className="hover:scale-105 transition-all"
+        className={`hover:scale-110 transition-all ${
+         loadingId === option.name ? "opacity-50" : ""
+        }`}
        />
-       <h2 className="text-xs mt-2">{option.name}</h2>
+       <h2 className="text-xs mt-2">
+        {loadingId === option.name ? "Creating..." : option.name}
+       </h2>
       </div>
      ))}
     </div>

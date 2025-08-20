@@ -2,6 +2,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
+// convex/designs.ts
 export const CreateNewDesign = mutation({
  args: {
   name: v.string(),
@@ -10,11 +11,23 @@ export const CreateNewDesign = mutation({
   uid: v.id("users"),
  },
  handler: async (ctx, args) => {
-  // Always create a new design with unique name
-  const uniqueName = `${args.name}-${Date.now()}`;
+  // Check if a design with the same name already exists for this user
+  const existingDesigns = await ctx.db
+   .query("designs")
+   .filter((q) =>
+    q.and(q.eq(q.field("name"), args.name), q.eq(q.field("uid"), args.uid))
+   )
+   .collect();
+
+  let designName = args.name;
+
+  // If design with same name exists, append timestamp to make it unique
+  if (existingDesigns.length > 0) {
+   designName = `${args.name}-${Date.now()}`;
+  }
 
   const designId = await ctx.db.insert("designs", {
-   name: uniqueName,
+   name: designName,
    width: args.width,
    height: args.height,
    uid: args.uid,
