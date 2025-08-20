@@ -10,17 +10,17 @@ export const CreateNewDesign = mutation({
   uid: v.id("users"),
  },
  handler: async (ctx, args) => {
-  // const existing = await ctx.db
-  //  .query("designs")
-  //  .filter((q) =>
-  //   q.and(q.eq(q.field("name"), args.name), q.eq(q.field("uid"), args.uid))
-  //  )
-  //  .collect();
+  // Always create a new design with unique name
+  const uniqueName = `${args.name}-${Date.now()}`;
 
-  // if (existing.length === 0) {
-  return await ctx.db.insert("designs", args);
-  // }
-  // return existing[0]._id;
+  const designId = await ctx.db.insert("designs", {
+   name: uniqueName,
+   width: args.width,
+   height: args.height,
+   uid: args.uid,
+  });
+
+  return designId;
  },
 });
 
@@ -29,8 +29,19 @@ export const GetDesign = query({
   id: v.id("designs"),
  },
  handler: async (ctx, args) => {
-  const result = await ctx.db.get(args.id);
-  return result;
+  try {
+   const result = await ctx.db.get(args.id);
+
+   if (!result) {
+    console.warn(`Design with ID ${args.id} not found`);
+    return null;
+   }
+
+   return result;
+  } catch (error) {
+   console.error("Error fetching design:", error);
+   throw new Error("Failed to fetch design");
+  }
  },
 });
 
