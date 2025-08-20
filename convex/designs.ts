@@ -10,17 +10,17 @@ export const CreateNewDesign = mutation({
   uid: v.id("users"),
  },
  handler: async (ctx, args) => {
-  const existing = await ctx.db
-   .query("designs")
-   .filter((q) =>
-    q.and(q.eq(q.field("name"), args.name), q.eq(q.field("uid"), args.uid))
-   )
-   .collect();
+  // const existing = await ctx.db
+  //  .query("designs")
+  //  .filter((q) =>
+  //   q.and(q.eq(q.field("name"), args.name), q.eq(q.field("uid"), args.uid))
+  //  )
+  //  .collect();
 
-  if (existing.length === 0) {
-   return await ctx.db.insert("designs", args);
-  }
-  return existing[0]._id;
+  // if (existing.length === 0) {
+  return await ctx.db.insert("designs", args);
+  // }
+  // return existing[0]._id;
  },
 });
 
