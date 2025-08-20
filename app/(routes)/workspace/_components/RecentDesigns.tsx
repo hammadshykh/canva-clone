@@ -37,6 +37,7 @@ const RecentDesigns = () => {
   console.log(result, "DESIGN LIST");
   setDesignList(result as any);
  };
+
  return (
   <div className="mt-7">
    <h2 className="font-bold text-2xl">Recent Designs</h2>

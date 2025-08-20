@@ -11,10 +11,12 @@ const Sidebar = () => {
 
  return (
   <div className="shadow-sm min-h-screen bg-purple-100">
-   <div className="p-2 flex items-center flex-col mb-5 hover:cursor-pointer">
-    <CirclePlus className="bg-purple-600 text-white rounded-full w-8 h-8" />
-    <h2 className="text-sm text-purple-600">Create</h2>
-   </div>
+   <CreateCanvasDialog>
+    <div className="p-2 w-full h-f flex items-center flex-col mb-5 hover:cursor-pointer">
+     <CirclePlus className="bg-purple-600 text-white rounded-full w-8 h-8" />
+     <h2 className="text-sm text-purple-600">Create</h2>
+    </div>
+   </CreateCanvasDialog>
    {WorkSpaceMenu.map((menu) => (
     <Link
      key={menu.name}

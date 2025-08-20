@@ -9,31 +9,20 @@ export const CreateNewDesign = mutation({
   width: v.float64(),
   height: v.float64(),
   uid: v.id("users"),
+  id: v.string(),
  },
  handler: async (ctx, args) => {
-  // Check if a design with the same name already exists for this user
-  const existingDesigns = await ctx.db
-   .query("designs")
-   .filter((q) =>
-    q.and(q.eq(q.field("name"), args.name), q.eq(q.field("uid"), args.uid))
-   )
-   .collect();
-
-  let designName = args.name;
-
-  // If design with same name exists, append timestamp to make it unique
-  if (existingDesigns.length > 0) {
-   designName = `${args.name}-${Date.now()}`;
-  }
-
+  // ALWAYS create a new design - no existing checks!
   const designId = await ctx.db.insert("designs", {
-   name: designName,
+   name: args.name,
    width: args.width,
    height: args.height,
    uid: args.uid,
+   id: args.id,
+   createdAt: Date.now(), // Add timestamp for uniqueness
   });
 
-  return designId;
+  return designId; // This will always be a new unique ID
  },
 });
 
@@ -102,7 +91,6 @@ export const CreateDesignFormTemplate = mutation({
    width: args.width,
    imagePreview: args.imagePreview,
    jsonTemplate: args.jsonTemplate,
-
    uid: args.uuid,
   });
   return result;

@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { v4 as uuidv4 } from "uuid";
 import {
  Dialog,
  DialogContent,
@@ -67,6 +68,7 @@ export function CreateCanvasDialog({ children }: { children: ReactNode }) {
     width: values.width,
     height: values.height,
     uid: userDetails._id, // Make sure to pass the user ID
+    id: uuidv4(),
    });
 
    form.reset();
@@ -83,9 +85,7 @@ export function CreateCanvasDialog({ children }: { children: ReactNode }) {
 
  return (
   <Dialog>
-   <DialogTrigger asChild>
-    <Button>{children}</Button>
-   </DialogTrigger>
+   <DialogTrigger asChild>{children}</DialogTrigger>
    <DialogContent className="sm:max-w-[425px]">
     <DialogHeader>
      <DialogTitle>Create Custom Canvas</DialogTitle>
