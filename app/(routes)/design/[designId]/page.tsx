@@ -1,3 +1,4 @@
+// pages or component where you render the editor, e.g. DesignEditor.tsx
 "use client";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -6,24 +7,28 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Sidebar from "../_components/Sidebar";
 import CanvasEditor from "../_components/CanvasEditor";
-import { CanvasProvider } from "@/context/CanvasEditorContext";
+import RightPreviewSidebar from "@/components/RightPreviewSidebar";
+import { CanvasProviderForFrontEndBack } from "@/context/CanvasEditorContext";
 
 const DesignEditor = () => {
  const { designId } = useParams();
  const DesignInfo = useQuery(api.designs.GetDesign, {
-  id: designId as any, // Consider using proper type here
+  id: designId as any,
  });
 
  return (
-  <CanvasProvider>
+  <CanvasProviderForFrontEndBack>
    <div>
     <DesignHeader designInfo={DesignInfo} />
     <div className="flex">
      <Sidebar />
-     <CanvasEditor designInfo={DesignInfo} />
+     <div className="flex-1">
+      <CanvasEditor designInfo={DesignInfo} />
+     </div>
+     <RightPreviewSidebar />
     </div>
    </div>
-  </CanvasProvider>
+  </CanvasProviderForFrontEndBack>
  );
 };
 

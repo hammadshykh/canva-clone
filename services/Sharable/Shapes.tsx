@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { shapeList } from "../Options";
 import Image from "next/image";
@@ -5,9 +6,12 @@ import { Circle, Line, Rect, Triangle } from "fabric";
 import { useCanvas } from "@/context/CanvasEditorContext";
 
 const Shapes = () => {
- const { canvasEditor } = useCanvas();
+ const { getCanvasBySide, activeSide } = useCanvas();
+ const canvasEditor = getCanvasBySide(activeSide); // ✅ use activeSide explicitly
 
  const onShapeSelect = (shape: any) => {
+  if (!canvasEditor) return;
+
   const commonProperties = {
    left: 100,
    top: 100,
@@ -35,7 +39,6 @@ const Shapes = () => {
     break;
 
    case "Triangle":
-   case "Trangle": // Handle both spellings
     shapeObject = new Triangle({
      ...commonProperties,
      width: 120,
@@ -57,16 +60,9 @@ const Shapes = () => {
     return;
   }
 
-  if (shapeObject && canvasEditor) {
-   canvasEditor.add(shapeObject);
-   canvasEditor.renderAll();
-
-   // Optional: Center the shape on canvas
-   setTimeout(() => {
-    shapeObject.center(); // Fixed typo: comter -> center
-    canvasEditor.renderAll();
-   }, 100);
-  }
+  canvasEditor.add(shapeObject);
+  canvasEditor.setActiveObject(shapeObject);
+  canvasEditor.renderAll();
  };
 
  return (

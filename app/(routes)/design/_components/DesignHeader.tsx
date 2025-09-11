@@ -13,7 +13,8 @@ import { toast } from "sonner";
 import ImageKit from "imagekit";
 
 const DesignHeader = ({ designInfo }: { designInfo: any }) => {
- const { canvasEditor } = useCanvas();
+ const { getCanvasBySide, activeSide, setActiveSide } = useCanvas();
+ const canvasEditor = getCanvasBySide(activeSide); // ✅ always fetch active canvas
  const { designId } = useParams();
  const [isSaving, setIsSaving] = useState(false);
  const [isExporting, setIsExporting] = useState(false);
@@ -43,12 +44,11 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
     quality: 0.8,
    } as any);
 
-   // Get List of Files
+   // delete old file if exists
    const existingFiles: any = await imagekit.listFiles({
-    searchQuery: `name="${designId}.png"`,
+    searchQuery: `name="${designId}-${activeSide}.png"`,
    });
 
-   // Delete Old files if they exist
    if (existingFiles && existingFiles.length > 0) {
     for (const file of existingFiles) {
      try {
@@ -59,25 +59,24 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
     }
    }
 
-   // Upload new image
    const imageRef = await imagekit.upload({
     file: base64Image,
-    fileName: `${designId}.png`,
+    fileName: `${designId}-${activeSide}.png`,
     isPublished: true,
     useUniqueFileName: false,
    });
 
    const jsonDesign = canvasEditor.toJSON();
 
-   const result = await saveDesignMutation({
+   await saveDesignMutation({
     id: designId as any,
-    jsonDesign: jsonDesign,
+    jsonDesign,
     imagePreview: imageRef.url,
    });
 
    toast.success("Design saved successfully!", {
     id: toastId,
-    description: "Your changes have been saved",
+    description: `Your ${activeSide} design has been saved`,
    });
   } catch (error) {
    console.error("Save failed:", error);
@@ -109,14 +108,14 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
 
    const link = document.createElement("a");
    link.href = dataURL;
-   link.download = `${designName || "design"}.png`;
+   link.download = `${designName || "design"}-${activeSide}.png`;
    document.body.appendChild(link);
    link.click();
    document.body.removeChild(link);
 
    toast.success("PNG exported successfully!", {
     id: toastId,
-    description: "Your design has been downloaded",
+    description: `Your ${activeSide} design has been downloaded`,
    });
   } catch (error) {
    console.error("Export failed:", error);
@@ -129,10 +128,6 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
   }
  };
 
- const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setDesignName(e.target.value);
- };
-
  return (
   <div className="flex justify-between items-center p-3 px-6 bg-gradient-to-r from-sky-500 via-blue-400 to-purple-500">
    <Image
@@ -141,20 +136,36 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
     alt="logo"
     width={100}
     height={100}
-    className="w-[100px] h-[40px]"
+    className="w-[100px] h-[40px] cursor-pointer"
    />
 
    <div>
     <Input
      placeholder="Design Name"
      value={designName}
-     onChange={handleNameChange}
+     onChange={(e) => setDesignName(e.target.value)}
      className="border-0 text-white bg-transparent placeholder:text-white/70 focus:ring-0 w-60"
      disabled={isSaving}
     />
    </div>
 
    <div className="flex items-center gap-4">
+    {/* Toggle between front/back */}
+    <div className="flex gap-2">
+     <Button
+      variant={activeSide === "front" ? "default" : "outline"}
+      onClick={() => setActiveSide("front")}
+     >
+      Front
+     </Button>
+     <Button
+      variant={activeSide === "back" ? "default" : "outline"}
+      onClick={() => setActiveSide("back")}
+     >
+      Back
+     </Button>
+    </div>
+
     <Button onClick={onHandleSave} disabled={isSaving} className="gap-2">
      {isSaving ? (
       <Loader2 className="w-4 h-4 animate-spin" />

@@ -10,7 +10,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 import { toast } from "sonner";
 
 const ShapesSettings = () => {
- const { canvasEditor } = useCanvas();
+ const { getCanvasBySide, activeSide } = useCanvas();
+ const canvasEditor = getCanvasBySide(activeSide);
 
  const activeObject = canvasEditor?.getActiveObject();
 

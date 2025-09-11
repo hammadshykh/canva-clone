@@ -3,7 +3,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 import React from "react";
 
 const BorderRadius = () => {
- const { canvasEditor } = useCanvas();
+ const { getCanvasBySide, activeSide } = useCanvas();
+ const canvasEditor = getCanvasBySide(activeSide);
 
  const handleRadiusChange = (value: number[]) => {
   const activeObject = canvasEditor?.getActiveObject();

@@ -23,7 +23,9 @@ const SearchImages = () => {
  const [images, setImages] = useState<UnsplashImage[]>([]);
  const [loading, setLoading] = useState(false);
  const [page, setPage] = useState(1);
- const { canvasEditor } = useCanvas();
+ const { getCanvasBySide, activeSide } = useCanvas();
+ const canvasEditor = getCanvasBySide(activeSide);
+
  const accessKey = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
 
  const searchImages = async (resetPage = true) => {

@@ -4,7 +4,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 import TextSettingsNavbar from "./TextSettingsNavbar";
 
 const TopNavbar = () => {
- const { canvasEditor } = useCanvas();
+ const { getCanvasBySide, activeSide } = useCanvas();
+ const canvasEditor = getCanvasBySide(activeSide);
  const [hasSelectedObject, setHasSelectedObject] = React.useState(false);
  const [enableTextSettings, setEnableTextSettings] = useState(false);
 

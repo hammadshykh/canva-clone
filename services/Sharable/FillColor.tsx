@@ -4,7 +4,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 
 const FillColor = () => {
  const [selectedColor, setSelectedColor] = useState("#000000"); // Default black color
- const { canvasEditor } = useCanvas();
+ const { getCanvasBySide, activeSide } = useCanvas();
+ const canvasEditor = getCanvasBySide(activeSide);
 
  const handleColorChange = (newColor: string) => {
   setSelectedColor(newColor);
