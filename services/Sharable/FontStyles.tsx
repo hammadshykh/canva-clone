@@ -4,8 +4,8 @@ import { Bold, Italic, Underline } from "lucide-react";
 import React from "react";
 
 const FontStyles = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas } = useCanvas();
+ const canvasEditor = canvas;
 
  const activeObject: any = canvasEditor?.getActiveObject();
  const onSettingClick = (type: string) => {

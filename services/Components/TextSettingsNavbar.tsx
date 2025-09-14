@@ -11,8 +11,8 @@ import { toast } from "sonner";
 import FontStyles from "../Sharable/FontStyles";
 
 const TextSettingsNavbar = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas, activeSide } = useCanvas();
+ const canvasEditor = canvas;
 
  const activeObject = canvasEditor?.getActiveObject();
 

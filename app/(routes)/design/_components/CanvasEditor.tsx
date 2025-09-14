@@ -7,137 +7,94 @@ import TopNavbar from "@/services/Components/TopNavbar";
 type Props = { designInfo: any };
 
 const CanvasEditor = ({ designInfo }: Props) => {
- const canvasRefFront = useRef<HTMLCanvasElement | null>(null);
- const canvasRefBack = useRef<HTMLCanvasElement | null>(null);
+ // Use a single ref for the canvas element
+ const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
- const {
-  frontCanvas,
-  backCanvas,
-  setFrontCanvas,
-  setBackCanvas,
-  activeSide,
-  setActiveSide,
- } = useCanvas();
+ const { activeSide, setActiveSide, setCanvas, canvas } = useCanvas();
 
- // safe area params
- const safeRatio = 0.6;
- const safeStroke = "#ccc";
- const safeStrokeWidth = 0.5;
+ const safeRatio = 0.6; // A ref to store the canvas content for each side
+
+ const designContentRef = useRef<Record<string, any>>({
+  front: null,
+  back: null,
+ }); // 1. Initialize canvas and load initial design
 
  useEffect(() => {
-  if (!designInfo) return;
+  if (!designInfo || !canvasRef.current || canvas) return;
 
   const displayWidth = Math.round((designInfo?.width || 800) / 2);
   const displayHeight = Math.round((designInfo?.height || 600) / 2);
 
-  // helper to init one canvas (front or back)
-  const initOne = (canvasEl: HTMLCanvasElement | null) => {
-   if (!canvasEl) return undefined;
+  const newCanvas = new Canvas(canvasRef.current, {
+   width: displayWidth,
+   height: displayHeight,
+   backgroundColor: "transparent",
+   preserveObjectStacking: true,
+   selectionBorderColor: "#ccc",
+  }); // Create and add safe area and clip path
 
-   const c = new Canvas(canvasEl, {
-    width: displayWidth,
-    height: displayHeight,
-    backgroundColor: "transparent",
-    preserveObjectStacking: true,
-    selectionBorderColor: "#ccc",
+  const areaWidth = Math.round(displayWidth * safeRatio);
+  const areaHeight = Math.round(displayHeight * safeRatio);
+  const areaLeft = Math.round((displayWidth - areaWidth) / 2);
+  const areaTop = Math.round((displayHeight - areaHeight) / 2);
+
+  const clipPath = new Rect({
+   left: areaLeft,
+   top: areaTop,
+   width: areaWidth,
+   height: areaHeight,
+   absolutePositioned: true,
+   selectable: false,
+   evented: false,
+  });
+
+  const safeAreaVisible = new Rect({
+   left: areaLeft,
+   top: areaTop,
+   width: areaWidth,
+   height: areaHeight,
+   fill: "white",
+   stroke: "#ccc",
+   strokeWidth: 0.5,
+   selectable: false,
+   evented: false,
+   isClipArea: true,
+  });
+
+  newCanvas.clipPath = clipPath;
+  newCanvas.add(safeAreaVisible); // Load initial front template
+
+  if (designInfo?.frontTemplate) {
+   newCanvas.loadFromJSON(designInfo.frontTemplate, () => {
+    newCanvas.renderAll();
    });
-
-   // safe area
-   const areaWidth = Math.round(displayWidth * safeRatio);
-   const areaHeight = Math.round(displayHeight * safeRatio);
-   const areaLeft = Math.round((displayWidth - areaWidth) / 2);
-   const areaTop = Math.round((displayHeight - areaHeight) / 2);
-
-   const safeAreaVisible = new Rect({
-    left: areaLeft,
-    top: areaTop,
-    width: areaWidth,
-    height: areaHeight,
-    fill: "white",
-    stroke: "#ccc",
-    strokeWidth: 0.5,
-    selectable: false,
-    evented: false,
-    isClipArea: true, // 👈 mark kiya so RightPreviewSidebar identify kar sake
-   }) as any;
-
-   c.clipPath = new Rect({
-    left: areaLeft,
-    top: areaTop,
-    width: areaWidth,
-    height: areaHeight,
-    absolutePositioned: true,
-   });
-
-   c.add(safeAreaVisible);
-   c.bringObjectToFront(safeAreaVisible);
-
-   return c;
-  };
-
-  // init front
-  if (!frontCanvas && canvasRefFront.current) {
-   const fc = initOne(canvasRefFront.current);
-   setFrontCanvas(fc);
+   designContentRef.current.front = designInfo.frontTemplate;
   }
-
-  // init back
-  if (!backCanvas && canvasRefBack.current) {
-   const bc = initOne(canvasRefBack.current);
-   setBackCanvas(bc);
+  if (designInfo?.backTemplate) {
+   designContentRef.current.back = designInfo.backTemplate;
   }
+  setCanvas(newCanvas);
 
-  // load templates if available
-  if (designInfo?.frontTemplate && frontCanvas) {
-   try {
-    frontCanvas.loadFromJSON(designInfo.frontTemplate, () =>
-     frontCanvas.renderAll()
-    );
-   } catch (e) {
-    console.warn("Failed loading front template", e);
-   }
-  }
-  if (designInfo?.backTemplate && backCanvas) {
-   try {
-    backCanvas.loadFromJSON(designInfo.backTemplate, () =>
-     backCanvas.renderAll()
-    );
-   } catch (e) {
-    console.warn("Failed loading back template", e);
-   }
-  }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
- }, [designInfo, setFrontCanvas, setBackCanvas]);
-
- useEffect(() => {
   return () => {
-   try {
-    frontCanvas?.dispose();
-   } catch {}
-   try {
-    backCanvas?.dispose();
-   } catch {}
+   newCanvas.dispose();
   };
- }, []);
+ }, [designInfo, canvas, setCanvas]); // Keyboard events
 
- // keyboard events for active canvas
  useEffect(() => {
   const handleKey = (e: KeyboardEvent) => {
-   const active = activeSide === "front" ? frontCanvas : backCanvas;
-   if (!active) return;
-
-   if (e.key === "Delete") {
-    const obj = active.getActiveObject();
-    if (obj) {
-     active.remove(obj);
-     active.renderAll();
-    }
+   if (!canvas) return;
+   const activeObject = canvas.getActiveObject();
+   if (
+    e.key === "Delete" &&
+    activeObject &&
+    !(activeObject as any).isClipArea
+   ) {
+    canvas.remove(activeObject);
+    canvas.renderAll();
     return;
    }
-
    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
-    const obj = active.getActiveObject();
+    const obj = canvas.getActiveObject();
     if (!obj) return;
     e.preventDefault();
     const move = e.shiftKey ? 10 : 1;
@@ -156,43 +113,40 @@ const CanvasEditor = ({ designInfo }: Props) => {
       break;
     }
     obj.setCoords();
-    active.renderAll();
+    canvas.renderAll();
    }
   };
-
   document.addEventListener("keydown", handleKey);
   return () => document.removeEventListener("keydown", handleKey);
- }, [frontCanvas, backCanvas, activeSide]);
-
- // toggle events when switching
- useEffect(() => {
-  if (frontCanvas && backCanvas) {
-   if (activeSide === "front") {
-    frontCanvas.selection = true;
-    frontCanvas.forEachObject((o) => (o.evented = true));
-    backCanvas.selection = false;
-    backCanvas.discardActiveObject();
-    backCanvas.forEachObject((o) => (o.evented = false));
-   } else {
-    backCanvas.selection = true;
-    backCanvas.forEachObject((o) => (o.evented = true));
-    frontCanvas.selection = false;
-    frontCanvas.discardActiveObject();
-    frontCanvas.forEachObject((o) => (o.evented = false));
-   }
-  }
- }, [activeSide, frontCanvas, backCanvas]);
+ }, [canvas]); // Handle the logic for switching between front and back
 
  const handleSwitch = (side: "front" | "back") => {
+  if (!canvas) return; // 1. Save the current state of the canvas to the ref
+
+  designContentRef.current[activeSide] = canvas.toJSON(); // 2. Load the new side's content
+
+  const newContent = designContentRef.current[side];
+  // canvas?.clear();
+  if (newContent) {
+   canvas.loadFromJSON(newContent, () => {
+    canvas.renderAll();
+   });
+  } // 3. Update activeSide state to trigger a re-render
   setActiveSide(side);
  };
 
+ const displayWidth = Math.round((designInfo?.width || 800) / 2);
+ const displayHeight = Math.round((designInfo?.height || 600) / 2);
+
  return (
   <div className="w-full bg-secondary min-h-screen">
-   <TopNavbar />
+      <TopNavbar />   
    <div className="flex gap-4 items-start mt-6 px-6">
+       {" "}
     <div>
+          
      <div className="mb-2">
+           {" "}
       <button
        className={`px-3 py-1 rounded mr-2 ${
         activeSide === "front"
@@ -201,34 +155,36 @@ const CanvasEditor = ({ designInfo }: Props) => {
        }`}
        onClick={() => handleSwitch("front")}
       >
-       Edit Front
+              Edit Front      {" "}
       </button>
+           {" "}
       <button
        className={`px-3 py-1 rounded ${
         activeSide === "back" ? "bg-blue-600 text-white" : "bg-white text-black"
        }`}
        onClick={() => handleSwitch("back")}
       >
-       Edit Back
+              Edit Back      {" "}
       </button>
+           
      </div>
-
+          
      <div className="text-black flex flex-col items-center justify-center pb-12">
+            {/* Use a single canvas element */}     {" "}
       <canvas
-       id="canvas-front"
-       ref={canvasRefFront}
-       style={{ display: activeSide === "front" ? "block" : "none" }}
+       ref={canvasRef}
        className="border border-blue-600"
+       width={displayWidth}
+       height={displayHeight}
+       style={{ display: "block" }}
       />
-      <canvas
-       id="canvas-back"
-       ref={canvasRefBack}
-       style={{ display: activeSide === "back" ? "block" : "none" }}
-       className="border border-blue-600"
-      />
+           
      </div>
+        {" "}
     </div>
+       
    </div>
+    {" "}
   </div>
  );
 };

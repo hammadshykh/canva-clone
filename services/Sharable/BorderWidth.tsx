@@ -3,8 +3,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 import React from "react";
 
 const BorderWidth = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas, activeSide } = useCanvas();
+ const canvasEditor = canvas;
  const handleWidthChange = (value: any) => {
   const activeObject = canvasEditor?.getActiveObject();
   if (activeObject) {

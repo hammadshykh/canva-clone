@@ -1,5 +1,6 @@
 // pages or component where you render the editor, e.g. DesignEditor.tsx
 "use client";
+
 import { useParams } from "next/navigation";
 import React from "react";
 import DesignHeader from "../_components/DesignHeader";

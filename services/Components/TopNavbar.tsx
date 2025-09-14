@@ -1,35 +1,35 @@
 import React, { useState } from "react";
 import ShapesSettings from "../Sharable/ShapesSettings";
-import { useCanvas } from "@/context/CanvasEditorContext";
 import TextSettingsNavbar from "./TextSettingsNavbar";
+import { useCanvas } from "@/context/CanvasEditorContext";
 
 const TopNavbar = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas, activeSide } = useCanvas();
+
  const [hasSelectedObject, setHasSelectedObject] = React.useState(false);
  const [enableTextSettings, setEnableTextSettings] = useState(false);
 
  React.useEffect(() => {
-  if (!canvasEditor) return;
+  if (!canvas) return;
 
   // Initial check
   checkSelection();
 
   // Set up event listeners
-  canvasEditor.on("selection:created", checkSelection);
-  canvasEditor.on("selection:updated", checkSelection);
-  canvasEditor.on("selection:cleared", checkSelection);
+  canvas.on("selection:created", checkSelection);
+  canvas.on("selection:updated", checkSelection);
+  canvas.on("selection:cleared", checkSelection);
 
   return () => {
    // Clean up event listeners
-   canvasEditor.off("selection:created", checkSelection);
-   canvasEditor.off("selection:updated", checkSelection);
-   canvasEditor.off("selection:cleared", checkSelection);
+   canvas.off("selection:created", checkSelection);
+   canvas.off("selection:updated", checkSelection);
+   canvas.off("selection:cleared", checkSelection);
   };
- }, [canvasEditor]);
+ }, [canvas]);
 
  const checkSelection = () => {
-  const activeObject: any = canvasEditor?.getActiveObject();
+  const activeObject: any = canvas?.getActiveObject();
   if (!activeObject?.text) {
    setHasSelectedObject(true);
    setEnableTextSettings(false);

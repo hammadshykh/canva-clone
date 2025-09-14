@@ -22,8 +22,8 @@ const CustomImageUpload = ({ selectedAi }: { selectedAi: any }) => {
  const [loading, setLoading] = useState(false);
  const [imageError, setImageError] = useState(false);
  const fileInputRef = useRef<HTMLInputElement>(null);
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas, activeSide } = useCanvas();
+ const canvasEditor = canvas;
  const { designId } = useParams();
 
  // Handle image upload to ImageKit

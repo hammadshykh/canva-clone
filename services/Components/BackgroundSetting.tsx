@@ -4,8 +4,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 
 const BackgroundSetting = () => {
  const [bgColor, setBgColor] = useState("#fff");
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas, activeSide } = useCanvas();
+ const canvasEditor = canvas;
 
  const onColorChange = (color: any) => {
   setBgColor(color);

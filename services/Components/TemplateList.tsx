@@ -7,8 +7,8 @@ import React from "react";
 type Template = {};
 
 const TemplateList = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas, activeSide } = useCanvas();
+ const canvasEditor = canvas;
  const templatelist = useQuery(api.templates.GetAllTemplates);
  console.log(templatelist);
 

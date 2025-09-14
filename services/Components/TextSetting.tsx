@@ -3,8 +3,8 @@ import { IText } from "fabric";
 import React from "react";
 
 const TextSetting = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas, activeSide } = useCanvas();
+ const canvasEditor = canvas;
  const onAddTextClick = (type: any) => {
   if (canvasEditor) {
    if (type == "Heading") {

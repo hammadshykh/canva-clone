@@ -1,19 +1,21 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+ createContext,
+ useContext,
+ useState,
+ ReactNode,
+ useCallback,
+ useMemo,
+} from "react";
 import type { Canvas as FabricCanvas } from "fabric";
 
 type Side = "front" | "back";
 
 type CanvasContextType = {
- frontCanvas?: FabricCanvas;
- backCanvas?: FabricCanvas;
+ canvas?: FabricCanvas;
  activeSide: Side;
- setFrontCanvas: (c?: FabricCanvas) => void;
- setBackCanvas: (c?: FabricCanvas) => void;
+ setCanvas: (c?: FabricCanvas) => void;
  setActiveSide: (s: Side) => void;
- // helpers
- getCanvasBySide: (s?: Side) => FabricCanvas | undefined;
- currentEditor?: FabricCanvas; // <--- NEW
 };
 
 const CanvasContext = createContext<CanvasContextType | undefined>(undefined);
@@ -23,29 +25,30 @@ export const CanvasProviderForFrontEndBack = ({
 }: {
  children: ReactNode;
 }) => {
- const [frontCanvas, setFront] = useState<FabricCanvas | undefined>(undefined);
- const [backCanvas, setBack] = useState<FabricCanvas | undefined>(undefined);
+ const [canvas, setCanvasState] = useState<FabricCanvas | undefined>(undefined);
  const [activeSide, setActive] = useState<Side>("front");
 
- const getCanvasBySide = (s?: Side) =>
-  (s ?? activeSide) === "front" ? frontCanvas : backCanvas;
+ const setCanvas = useCallback((c?: FabricCanvas) => {
+  setCanvasState(c);
+ }, []);
 
- const currentEditor = getCanvasBySide();
+ const setActiveSide = useCallback((s: Side) => {
+  setActive(s);
+ }, []);
+
+ const contextValue = useMemo(
+  () => ({
+   canvas,
+   activeSide,
+   setCanvas,
+   setActiveSide,
+  }),
+  [canvas, activeSide, setCanvas, setActiveSide]
+ );
 
  return (
-  <CanvasContext.Provider
-   value={{
-    frontCanvas,
-    backCanvas,
-    activeSide,
-    setFrontCanvas: setFront,
-    setBackCanvas: setBack,
-    setActiveSide: setActive,
-    getCanvasBySide,
-    currentEditor, // expose active canvas
-   }}
-  >
-   {children}
+  <CanvasContext.Provider value={contextValue}>
+      {children} {" "}
   </CanvasContext.Provider>
  );
 };

@@ -3,8 +3,8 @@ import { FontFamilyList } from "../Options";
 import { useCanvas } from "@/context/CanvasEditorContext";
 
 const FontFamily = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas } = useCanvas();
+ const canvasEditor = canvas;
 
  const handleFontFamilyChange = (value: any) => {
   const activeObject = canvasEditor?.getActiveObject();

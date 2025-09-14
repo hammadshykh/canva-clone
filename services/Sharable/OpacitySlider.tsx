@@ -3,8 +3,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 import React from "react";
 
 const OpacitySlider = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas } = useCanvas();
+ const canvasEditor = canvas;
 
  const handleOpacityChange = (value: number[]) => {
   const activeObject = canvasEditor?.getActiveObject();

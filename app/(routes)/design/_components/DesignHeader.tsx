@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useCanvas } from "@/context/CanvasEditorContext";
 import { UserButton } from "@stackframe/stack";
 import { Save, Loader2, Download } from "lucide-react";
 import Image from "next/image";
@@ -11,10 +10,10 @@ import { api } from "@/convex/_generated/api";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ImageKit from "imagekit";
+import { useCanvas } from "@/context/CanvasEditorContext";
 
 const DesignHeader = ({ designInfo }: { designInfo: any }) => {
- const { getCanvasBySide, activeSide, setActiveSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide); // ✅ always fetch active canvas
+ const { canvas, activeSide, setActiveSide } = useCanvas();
  const { designId } = useParams();
  const [isSaving, setIsSaving] = useState(false);
  const [isExporting, setIsExporting] = useState(false);
@@ -30,7 +29,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
  const saveDesignMutation = useMutation(api.designs.SaveDesign);
 
  const onHandleSave = async () => {
-  if (!canvasEditor || !designId) {
+  if (!canvas || !designId) {
    toast.error("Canvas or design ID not available");
    return;
   }
@@ -39,7 +38,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
   const toastId = toast.loading("Saving design...");
 
   try {
-   const base64Image = canvasEditor.toDataURL({
+   const base64Image = canvas.toDataURL({
     format: "png",
     quality: 0.8,
    } as any);
@@ -66,7 +65,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
     useUniqueFileName: false,
    });
 
-   const jsonDesign = canvasEditor.toJSON();
+   const jsonDesign = canvas.toJSON();
 
    await saveDesignMutation({
     id: designId as any,
@@ -91,7 +90,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
  };
 
  const handleExportPNG = async () => {
-  if (!canvasEditor) {
+  if (!canvas) {
    toast.error("Canvas not available");
    return;
   }
@@ -100,7 +99,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
   const toastId = toast.loading("Exporting PNG...");
 
   try {
-   const dataURL = canvasEditor.toDataURL({
+   const dataURL = canvas.toDataURL({
     format: "png",
     quality: 1,
     multiplier: 2,
@@ -177,7 +176,7 @@ const DesignHeader = ({ designInfo }: { designInfo: any }) => {
 
     <Button
      onClick={handleExportPNG}
-     disabled={isExporting || !canvasEditor}
+     disabled={isExporting || !canvas}
      variant="outline"
      className="gap-2 bg-white/10 hover:bg-white/20 text-white border-white/20"
     >

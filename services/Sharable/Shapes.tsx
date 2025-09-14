@@ -6,12 +6,9 @@ import { Circle, Line, Rect, Triangle } from "fabric";
 import { useCanvas } from "@/context/CanvasEditorContext";
 
 const Shapes = () => {
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide); // ✅ use activeSide explicitly
+ const { canvas, activeSide } = useCanvas();
 
  const onShapeSelect = (shape: any) => {
-  if (!canvasEditor) return;
-
   const commonProperties = {
    left: 100,
    top: 100,
@@ -38,7 +35,7 @@ const Shapes = () => {
     });
     break;
 
-   case "Triangle":
+   case "Trangle":
     shapeObject = new Triangle({
      ...commonProperties,
      width: 120,
@@ -60,9 +57,9 @@ const Shapes = () => {
     return;
   }
 
-  canvasEditor.add(shapeObject);
-  canvasEditor.setActiveObject(shapeObject);
-  canvasEditor.renderAll();
+  canvas?.add(shapeObject);
+  canvas?.setActiveObject(shapeObject);
+  canvas?.renderAll();
  };
 
  return (

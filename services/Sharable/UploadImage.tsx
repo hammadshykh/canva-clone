@@ -10,8 +10,8 @@ import { useCanvas } from "@/context/CanvasEditorContext";
 const UploadImage: React.FC = () => {
  const { designId } = useParams();
  const [loading, setLoading] = useState(false);
- const { getCanvasBySide, activeSide } = useCanvas();
- const canvasEditor = getCanvasBySide(activeSide);
+ const { canvas } = useCanvas();
+ const canvasEditor = canvas;
 
  const imagekit = new ImageKit({
   publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
